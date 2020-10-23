@@ -2,8 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const http = require('http');
 const cors = require('cors');
-const cache = require('./lib/datastore');
-
+const indexRoutes = require('./controllers/indexRouter');
 
 
 require('dotenv').config()
@@ -23,59 +22,8 @@ const server = http.createServer(app);
 app.use(cors(corsOptions));
 app.use(express.json({ limit: '200mb' }));
 app.use(express.urlencoded({ extended: true, limit: '200mb' }));
+app.use('/', indexRoutes);
 
-app.get("/getnewport/:roomid", (req, res) => {
-    let id = req.params.roomid
-    console.log("Room: ", id);
-    cache.list(id)
-    .then((list)=>{
-        console.log("out: ", list)
-        let config = {}
-        if(list){
-            config = JSON.parse(list.config);
-            config.audioPort += 1
-            config.videoPort += 1
-            config.dataPort += 1
-        }else{
-            config.audioPort = 5000;
-            config.videoPort = 5001;
-            config.dataPort = 5002;
-        }
-        
-        res.status(200).json({
-            success:1,
-            message: config
-        })
-    }).catch((err)=>{
-        res.status(500).json({
-            success: 0,
-            message: err
-        })
-    })
-})
-
-app.post("/add-rtplistener/:roomid", (req, res) => {
-    let roomId = req.params.roomid
-    let cacheContent = {
-        audioPort: req.body.audioPort,
-        videoPort: req.body.videoPort,
-        dataPort: req.body.dataPort
-    }
-
-    cache.upsert(roomId, 'config', cacheContent).then(()=>{
-        res.status(200).json({
-            success: 1,
-            message: "Added to cache"
-        })
-    })
-    .catch((e)=>{
-        res.status(500).json({
-            success: 0,
-            message: e
-        })
-    });
-
-})
 
 
 server.listen(port);

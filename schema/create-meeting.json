@@ -1,0 +1,24 @@
+{
+    "title": "create meeting",
+    "description": "Describes properties to create a meeting",
+    "type": "object",
+    "properties": {
+            "name" : {
+                "type" : "string",
+                "description": "Name of the meeting"
+            }, 
+            "pin"  : {
+                "type": "string",
+                "description": "Meeting security pin"
+            },
+            "record" : {
+                "type":"boolean",
+                "description": "Whether to record the meeting or not"
+            },
+            "owner": {
+                "type": "string",
+                "description": "ID of the owner of the room"
+            }
+    },
+    "required": ["name", "owner"]
+}

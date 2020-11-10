@@ -1,0 +1,24 @@
+{
+    "title": "User registration",
+    "description": "Describes properties to register a user",
+    "type": "object",
+    "properties": {
+        "name": {
+            "type": "string",
+            "description": "Name of the user"
+        },
+        "email": {
+            "type": "string",
+            "description": "Uniques email id of the user"
+        },
+        "secret": {
+            "type": "string",
+            "description": "User secret to access apis"
+        },
+        "token": {
+            "type": "string",
+            "description": "Optional token to map user"
+        }
+    },
+    "required" : ["email", "name"]
+}
